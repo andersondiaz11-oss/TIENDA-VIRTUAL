@@ -1,13 +1,25 @@
+from decimal import Decimal, InvalidOperation
 
 def validar_precio():
     while True:
         try:
-            precio = float(input("Precio: S/ "))
-            if precio > 0:
+            entrada = input("Precio: S/ ").strip()
+            entrada = entrada.replace(",", ".")
+
+            precio = Decimal(entrada)
+
+            if not precio.is_finite():
+                print("Error: Ingresa un precio finito.")
+            elif precio <= 0:
+                print("Error: El precio debe ser mayor que cero.")
+            elif precio.as_tuple().exponent < -2:
+                print("Error: Usa máximo dos decimales.")
+            else:
                 return precio
-            print("Error: El precio debe ser mayor que cero.")
-        except ValueError:
+
+        except InvalidOperation:
             print("Error: Ingresa un precio válido.")
+
 
 
 def validar_cantidad():
